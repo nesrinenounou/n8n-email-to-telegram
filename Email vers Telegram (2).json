@@ -1,0 +1,80 @@
+{
+  "name": "Email vers Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "postProcessAction": "nothing",
+        "format": "resolved",
+        "options": {
+          "customEmailConfig": "[\"UNSEEN\", [\"SINCE\", \"Nov 17, 2026\"]]",
+          "forceReconnect": 5
+        }
+      },
+      "name": "Email Trigger (IMAP)",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "71629d49-7e7d-4a40-9f2b-741d72e44057",
+      "credentials": {
+        "imap": {
+          "id": "ODXNOngd3WqNORqO",
+          "name": "IMAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1686113553",
+        "text": "=\n📧 Email jdid\nNom: {{ $json.from?.value?.[0]?.name || $json.from?.text || 'Inconnu' }}\nEmail: {{ $json.from?.value?.[0]?.address || '' }}\nSujet: {{ $json.subject }}\n\n{{ ($json.textPlain || $json.text || '').slice(0, 300) }}\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        0
+      ],
+      "id": "58e333a5-c1a1-4f3b-9e94-eee4b175c3bb",
+      "webhookId": "e10f2eec-23f2-4962-9b5c-03369604ce78",
+      "credentials": {
+        "telegramApi": {
+          "id": "mhBL2n1myDVDBTvc",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2b13303c-8a66-471e-a94e-f0fcfd6611e1",
+  "meta": {
+    "instanceId": "582c690677e3658525a976ca8fba7887f3ff921e935edadb384a991256a604f7"
+  },
+  "nodeGroups": [],
+  "id": "kl7i1tL8zwqCQDUT",
+  "tags": []
+}
